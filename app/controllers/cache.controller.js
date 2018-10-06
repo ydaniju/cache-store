@@ -7,7 +7,7 @@ CacheController.getCaches = (req, res) => {
     if (err) {
       return res.status(500).end();
     }
-    return res.json(caches);
+    return res.status(200).json(caches);
   });
 };
 
