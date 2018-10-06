@@ -1,0 +1,42 @@
+# Cache Store
+
+A key-value store for generating radom data for your keys
+
+## Getting Started
+
+### Prerequisites
+
+- Mongo
+- Yarn
+
+### Installing
+
+1. Clone project `https://github.com/ydaniju/cache-store`
+
+2. Run `cd cache-store`
+
+3. Run `yarn`
+
+
+## Running the tests
+
+Run `yarn test`
+
+### Coding style tests
+
+Run `yarn lint`
+
+## Built With
+
+* [Node](https://nodejs.org/) - JavaScript Runtime
+* [Express](https://expressjs.com/) - The web framework
+* [Mongoose](https://mongoosejs.com/) - The ODM
+* [Yarn](https://yarnpkg.com/) - Dependency Management
+
+## Contributing
+
+Contact @ydaniju <danijuyusuf@outlook.com>
+
+## License
+
+This project is licensed under the MIT License.
