@@ -8,6 +8,8 @@
   "license": "MIT",
   "scripts": {
     "lint": "eslint .",
+    "start": "NODE_ENV=production node server.js",
+    "start:dev": "NODE_ENV=development node server.js",
     "test": "mocha spec/**/**.spec.js --timeout 10000"
   },
   "devDependencies": {
