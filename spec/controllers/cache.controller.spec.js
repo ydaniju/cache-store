@@ -42,7 +42,7 @@ describe('Cache Controller', () => {
     });
   });
 
-  describe('create cache', () => {
+  describe('create a cache', () => {
     let error; let req; let res; let expectedResult; let status;
     beforeEach(() => {
       req = {body: {key: 'badminton'}};
@@ -72,6 +72,52 @@ describe('Cache Controller', () => {
         CacheController.create(req, res);
         sinon.assert.calledWith(Cache.create, req.body);
         sinon.assert.calledWith(res.status, 422);
+      });
+    });
+  });
+
+  describe('destroy a cache', () => {
+    let error; let req; let res; let status;
+    beforeEach(() => {
+      req = {body: {key: 'badminton'}, params: {key: 'badminton'}};
+      status = sinon.stub();
+      res = {json: sinon.spy(), end: sinon.spy(), status};
+      status.returns(res);
+      error = new Error({error: 'blah blah'});
+    });
+
+    afterEach(() => {
+      sinon.restore();
+    });
+
+    context('when successful', () => {
+      it('should return status 200', () => {
+        sinon.stub(Cache, 'findOneAndDelete').yields(null, {});
+        CacheController.destroy(req, res);
+
+        sinon.assert.calledWith(Cache.findOneAndDelete, {key: req.params.key});
+        sinon.assert.calledWith(
+            res.json, sinon.match({'message': 'Cache deleted!'}));
+      });
+    });
+
+    context('when not existing', () => {
+      it('should return status 404', () => {
+        sinon.stub(Cache, 'findOneAndDelete').yields(null, null);
+        CacheController.destroy(req, res);
+
+        sinon.assert.calledWith(res.status, 404);
+      });
+    });
+
+    context('when there is an error', () => {
+      it('should return status 500', () => {
+        sinon.stub(Cache, 'findOneAndDelete').yields(error);
+        CacheController.destroy(req, res);
+
+        sinon.assert.calledWith(Cache.findOneAndDelete, {key: req.params.key});
+        sinon.assert.calledWith(res.status, 500);
+        sinon.assert.calledOnce(res.status(500).end);
       });
     });
   });
