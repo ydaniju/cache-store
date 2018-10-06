@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const morgan = require('morgan');
 
 const config = require('./app/config');
+const router = require('./app/config/router');
 
 const app = express();
 
@@ -14,10 +15,14 @@ app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({'extended': true}));
 // parse application/json
 app.use(bodyParser.json());
+app.use(router);
 app.use(methodOverride);
 
 // connecting MongoDB using mongoose to our application
-mongoose.connect(config.db, {useNewUrlParser: true});
+mongoose.set('useCreateIndex', true);
+mongoose.connect(
+  config.db,
+  {useNewUrlParser: true});
 // this callback will be triggered on successful connection
 mongoose.connection.on('connected', () => {
   console.log(`Mongoose connected successfully to ${config.db}`);

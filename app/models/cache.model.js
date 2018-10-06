@@ -1,5 +1,4 @@
-'use strict';
-let mongoose = require('mongoose');
+const mongoose = require('mongoose');
 
 const cacheSchema = new mongoose.Schema({
   key: {type: String, required: true, index: true, unique: true},
