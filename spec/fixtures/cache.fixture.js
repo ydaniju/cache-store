@@ -19,4 +19,4 @@ const thirdCache = {
   expires: new Date(),
 };
 
-module.exports = { firstCache, secondCache, thirdCache };
+module.exports = {firstCache, secondCache, thirdCache};
