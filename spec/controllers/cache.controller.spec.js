@@ -26,7 +26,7 @@ describe('Cache Controller', () => {
     context('when successful', () => {
       it('returns array of Caches or empty array', () => {
         sinon.stub(Cache, 'find').yields(null, expectedResult);
-        CacheController.getCaches(req, res);
+        CacheController.getAll(req, res);
         sinon.assert.calledWith(Cache.find, {});
         sinon.assert.calledWith(res.json, sinon.match.array);
       });
@@ -35,7 +35,7 @@ describe('Cache Controller', () => {
     context('when not successful', () => {
       it('returns status 500 on server error', () => {
         sinon.stub(Cache, 'find').yields(error);
-        CacheController.getCaches(req, res);
+        CacheController.getAll(req, res);
         sinon.assert.calledWith(Cache.find, {});
         sinon.assert.calledWith(res.status, 500);
       });
