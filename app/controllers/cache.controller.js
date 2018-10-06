@@ -10,8 +10,7 @@ const CacheController = {
     });
   },
   create: (req, res) => {
-    console.log(req.body)
-    return Cache.create(req.body, function (err, cache) {
+    return Cache.create(req.body, function(err, cache) {
       if (err) {
         return res.status(422).json(err.message);
       }

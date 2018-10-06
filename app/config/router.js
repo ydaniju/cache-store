@@ -7,7 +7,7 @@ const CacheController = require('../controllers/cache.controller');
 // GET '/caches'
 router.get('/caches', CacheController.getAll);
 
-// POST '/caches' 
+// POST '/caches'
 router.post('/caches', CacheController.create);
 
 module.exports = router;

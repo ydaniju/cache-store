@@ -43,33 +43,36 @@ describe('Cache Controller', () => {
   });
 
   describe('create cache', () => {
-    let error; let req; let res; let expectedResult;
+    let error; let req; let res; let expectedResult; let status;
     beforeEach(() => {
       req = {body: {key: 'badminton'}};
-      status = sinon.stub()
-      res = { json: sinon.spy(), status };
+      status = sinon.stub();
+      res = {json: sinon.spy(), status};
       status.returns(res);
-      error = new Error({ error: 'blah blah' });
+      error = new Error({error: 'blah blah'});
     });
 
     afterEach(() => {
       sinon.restore();
     });
 
-    it('should return created Cache obj', () => {
-      expectedResult = req.body;
-      sinon.stub(Cache, 'create').yields(null, expectedResult);
-      CacheController.create(req, res);
-      console.log(res.json)
-      sinon.assert.calledWith(Cache.create, req.body);
-      sinon.assert.calledWith(res.json, sinon.match({key: req.body.key}));
+    context('when successful', () => {
+      it('should return created Cache obj', () => {
+        expectedResult = req.body;
+        sinon.stub(Cache, 'create').yields(null, expectedResult);
+        CacheController.create(req, res);
+        sinon.assert.calledWith(Cache.create, req.body);
+        sinon.assert.calledWith(res.json, sinon.match({key: req.body.key}));
+      });
     });
 
-    it('should return status 422 on server error', () => {
-      sinon.stub(Cache, 'create').yields(error);
-      CacheController.create(req, res);
-      sinon.assert.calledWith(Cache.create, req.body);
-      sinon.assert.calledWith(res.status, 422);
+    context('when not successful', () => {
+      it('should return status 422 on server error', () => {
+        sinon.stub(Cache, 'create').yields(error);
+        CacheController.create(req, res);
+        sinon.assert.calledWith(Cache.create, req.body);
+        sinon.assert.calledWith(res.status, 422);
+      });
     });
   });
 });
