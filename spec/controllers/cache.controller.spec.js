@@ -4,12 +4,15 @@ const Cache = require('../../app/models/cache.model');
 
 describe('Cache Controller', () => {
   describe('index (get all caches)', () => {
+    let req; let status; let end; let res; let json; let error;
+    let expectedResult;
     beforeEach(() => {
+      end = sinon.spy();
+      json = sinon.spy();
       req = {};
-      res = {
-        json: sinon.spy(),
-        status: sinon.stub().returns({end: sinon.spy()}),
-      };
+      status = sinon.stub();
+      res = {json, status, end};
+      status.returns(res);
       expectedResult = [{}, {}, {}];
       error = new Error({error: 'blah blah'});
     });
@@ -30,7 +33,6 @@ describe('Cache Controller', () => {
       CacheController.getCaches(req, res);
       sinon.assert.calledWith(Cache.find, {});
       sinon.assert.calledWith(res.status, 500);
-      sinon.assert.calledOnce(res.status(500).end);
     });
   });
 });

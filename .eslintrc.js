@@ -10,12 +10,6 @@ module.exports = {
   },
   "overrides": [
     {
-      "files": ["*.spec.js"],
-      "rules": {
-        "no-undef": "off"
-      }
-    },
-    {
       "files": ["server.js"],
       "rules": {
         "no-console": "off"

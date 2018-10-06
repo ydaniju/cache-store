@@ -7,6 +7,8 @@ const expect = chai.expect;
 const context = describe;
 
 describe('caches requests', () => {
+  let responseBody; let responseObject;
+
   describe('GET /caches', () => {
     context('when successful', () => {
       beforeEach(() => {
