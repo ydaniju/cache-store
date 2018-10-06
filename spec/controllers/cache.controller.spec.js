@@ -1,6 +1,7 @@
 const sinon = require('sinon');
 const CacheController = require('../../app/controllers/cache.controller');
 const Cache = require('../../app/models/cache.model');
+const cacheFixtures = require('../fixtures/cache.fixture')
 const context = describe;
 
 describe('Cache Controller', () => {
@@ -14,7 +15,7 @@ describe('Cache Controller', () => {
       status = sinon.stub();
       res = {json, status, end};
       status.returns(res);
-      expectedResult = [{}, {}, {}];
+      expectedResult = [cacheFixtures.firstCache];
       error = new Error({error: 'blah blah'});
     });
 
@@ -38,7 +39,7 @@ describe('Cache Controller', () => {
         sinon.assert.calledWith(Cache.find, {});
         sinon.assert.calledWith(res.status, 500);
       });
-    }); 
+    });
   });
 });
 

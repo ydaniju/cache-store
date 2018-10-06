@@ -6,6 +6,8 @@ const chai = require('chai');
 const expect = chai.expect;
 const context = describe;
 
+const cacheFixtures = require('../fixtures/cache.fixture');
+
 describe('caches requests', () => {
   let responseBody; let responseObject;
 
@@ -19,24 +21,9 @@ describe('caches requests', () => {
           },
         };
         responseBody = [
-          {
-            id: 4,
-            key: 'valhala',
-            data: '$dhgddh$BjkhjfHd',
-            expires: new Date(),
-          },
-          {
-            id: 7,
-            key: 'logorhea',
-            data: '$bdb$BHd',
-            expires: new Date(),
-          },
-          {
-            id: 8,
-            key: 'slobodan',
-            data: '$6bdbd$778333',
-            expires: new Date(),
-          },
+          cacheFixtures.firstCache,
+          cacheFixtures.secondCache,
+          cacheFixtures.thirdCache,
         ];
         this.get = sinon.stub(request, 'get');
       });
