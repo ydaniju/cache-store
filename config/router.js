@@ -10,4 +10,7 @@ router.get('/caches', CacheController.getAll);
 // POST '/caches'
 router.post('/caches', CacheController.create);
 
+// DELETE '/caches/:key'
+router.delete('/caches/:key', CacheController.destroy);
+
 module.exports = router;
