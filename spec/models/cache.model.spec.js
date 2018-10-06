@@ -1,5 +1,5 @@
 const expect = require('chai').expect;
-const Cache = require('./Cache');
+const Cache = require('../../app/models/cache.model');
 
 describe('Cache', () => {
   it('should be invalid if key is empty', (done) => {

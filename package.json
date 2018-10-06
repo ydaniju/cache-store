@@ -8,7 +8,7 @@
   "license": "MIT",
   "scripts": {
     "lint": "eslint .",
-    "test": "mocha lib/**/**.spec.js"
+    "test": "mocha spec/**/**.spec.js --timeout 10000"
   },
   "devDependencies": {
     "chai": "^4.2.0",
