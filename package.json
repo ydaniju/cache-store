@@ -1,0 +1,9 @@
+{
+  "name": "cache-store",
+  "version": "0.0.1",
+  "description": "A key-value data store",
+  "main": "server.js",
+  "repository": "https://github.com/ydaniju/cache-store",
+  "author": "@ydaniju",
+  "license": "MIT"
+}
