@@ -11,14 +11,17 @@ A key-value store for generating radom data for your keys
 
 ### Installing
 
-1. Clone project `https://github.com/ydaniju/cache-store`
+1. Clone project  `git clone https://github.com/ydaniju/cache-store`
 
 2. Run `cd cache-store`
 
 3. Run `yarn`
 
+4. Start server in development using `yarn start:dev`
 
 ## Running the tests
+
+### Unit Tests
 
 Run `yarn test`
 
