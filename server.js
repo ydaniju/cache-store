@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const app = require('./app');
-const config = require('./app/config');
+const config = require('./config');
 
 // connecting MongoDB using mongoose to our application
 mongoose.set('useCreateIndex', true);

@@ -2,7 +2,7 @@ const bodyParser = require('body-parser');
 const express = require('express');
 const methodOverride = require('method-override');
 const morgan = require('morgan');
-const router = require('./config/router');
+const router = require('../config/router');
 const app = express();
 
 // log to console in dev
