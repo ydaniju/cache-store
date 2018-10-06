@@ -8,4 +8,12 @@ module.exports = {
   "parserOptions": {
     "ecmaVersion": 6
   },
+  "overrides": [
+    {
+      "files": ["server.js"],
+      "rules": {
+        "no-console": "off"
+      }
+    }
+  ]
 };
