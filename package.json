@@ -5,5 +5,9 @@
   "main": "server.js",
   "repository": "https://github.com/ydaniju/cache-store",
   "author": "@ydaniju",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^5.2.0"
+  }
 }
