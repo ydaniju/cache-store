@@ -4,10 +4,7 @@ const config = require('./app/config');
 
 // connecting MongoDB using mongoose to our application
 mongoose.set('useCreateIndex', true);
-mongoose.connect(
-  config.db,
-  {useNewUrlParser: true},
-);
+mongoose.connect(config.db, {useNewUrlParser: true});
 
 // this callback will be triggered on successful connection
 mongoose.connection.on('connected', () => {
