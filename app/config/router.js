@@ -4,7 +4,10 @@ const router = express.Router();
 
 const CacheController = require('../controllers/cache.controller');
 
-// Get all Caches
-router.get('/caches', CacheController.getCaches);
+// GET '/caches'
+router.get('/caches', CacheController.getAll);
+
+// POST '/caches'
+router.post('/caches', CacheController.create);
 
 module.exports = router;
