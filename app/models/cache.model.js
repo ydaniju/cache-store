@@ -18,15 +18,15 @@ cacheSchema.pre('validate', function(next) {
   next();
 });
 
-cacheSchema.pre('save', function(next) {
+cacheSchema.post('validate', function(next) {
   const self = this;
   self.constructor.countDocuments((err, cacheCount) => {
-    if (err) return next(err);
+    if (err) next(err);
 
     if (cacheCount == MAX_COUNT) {
       // overwrite old entry
     }
-    return next();
+    next();
   });
 });
 
