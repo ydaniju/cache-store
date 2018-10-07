@@ -33,7 +33,9 @@ const CacheController = {
     return Cache.findOneAndDelete({key: req.params.key}, (err, cache) => {
       if (err) return res.status(500).end();
       if (!cache) return res.status(404).end();
-      return res.status(200).json({'message': 'Cache deleted!'});
+      return res
+          .status(200)
+          .json({'message': `Cache with key ${req.params.key} deleted!`});
     });
   },
 };

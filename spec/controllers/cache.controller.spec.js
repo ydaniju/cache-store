@@ -16,7 +16,7 @@ describe('Cache Controller', () => {
       res = {json, status, end};
       status.returns(res);
       expectedResult = [cacheFixtures.firstCache];
-      error = new Error({error: 'blah blah'});
+      error = new Error({error: 'some error'});
     });
 
     afterEach(() => {
@@ -53,7 +53,7 @@ describe('Cache Controller', () => {
       res = {json, status, end};
       status.returns(res);
       expectedResult = cacheFixtures.firstCache;
-      error = new Error({error: 'blah blah'});
+      error = new Error({error: 'some error'});
     });
 
     afterEach(() => {
@@ -111,7 +111,7 @@ describe('Cache Controller', () => {
       status = sinon.stub();
       res = {json: sinon.spy(), status};
       status.returns(res);
-      error = new Error({error: 'blah blah'});
+      error = new Error({error: 'some error'});
     });
 
     afterEach(() => {
@@ -145,7 +145,7 @@ describe('Cache Controller', () => {
       status = sinon.stub();
       res = {json: sinon.spy(), end: sinon.spy(), status};
       status.returns(res);
-      error = new Error({error: 'blah blah'});
+      error = new Error({error: 'some error'});
     });
 
     afterEach(() => {
@@ -159,7 +159,10 @@ describe('Cache Controller', () => {
 
         sinon.assert.calledWith(Cache.findOneAndDelete, {key: req.params.key});
         sinon.assert.calledWith(
-            res.json, sinon.match({'message': 'Cache deleted!'}));
+            res.json, sinon.match(
+                {'message': `Cache with key ${req.params.key} deleted!`}
+            )
+        );
       });
     });
 
@@ -182,6 +185,42 @@ describe('Cache Controller', () => {
         sinon.assert.calledOnce(res.status(500).end);
       });
     });
+  });
+
+  describe('destroy all cache', () => {
+    let error; let req; let res; let status;
+    beforeEach(() => {
+      req = {};
+      status = sinon.stub();
+      res = {json: sinon.spy(), end: sinon.spy(), status};
+      status.returns(res);
+      error = new Error({error: 'some error'});
+    });
+
+    afterEach(() => {
+      sinon.restore();
+    });
+
+    context('when successful', () => {
+      it('should return status 200', () => {
+        sinon.stub(Cache, 'remove').yields(null, {});
+        CacheController.destroyAll(req, res);
+
+        sinon.assert.calledWith(Cache.remove, {});
+        sinon.assert.calledWith(
+            res.json, sinon.match({'message': 'All caches cleared!'}));
+      });
+    });
+
+    // context('when there is an error', () => {
+    //   it('should return status 500', () => {
+    //     sinon.stub(Cache, 'findOneAndDelete').yields(error);
+    //     CacheController.destroy(req, res);
+
+    //     sinon.assert.calledWith(res.status, 500);
+    //     sinon.assert.calledOnce(res.status(500).end);
+    //   });
+    // });
   });
 });
 
