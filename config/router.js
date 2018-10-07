@@ -5,7 +5,10 @@ const router = express.Router();
 const CacheController = require('../app/controllers/cache.controller');
 
 // GET '/caches'
-router.get('/caches', CacheController.getAll);
+router.get('/caches', CacheController.index);
+
+// GET '/caches/:key'
+router.get('/caches/:key', CacheController.show);
 
 // POST '/caches'
 router.post('/caches', CacheController.create);
