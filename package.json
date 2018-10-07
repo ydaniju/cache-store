@@ -10,7 +10,7 @@
     "lint": "eslint .",
     "start": "NODE_ENV=production node server.js",
     "start:dev": "NODE_ENV=development node server.js",
-    "test": "jest spec/**/**.spec.js"
+    "test": "jest spec/**/**.spec.js --coverage"
   },
   "devDependencies": {
     "eslint": "^5.6.1",
