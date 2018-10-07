@@ -8,15 +8,18 @@ const CacheController = {
     });
   },
   show: (req, res) => {
-    return Cache.find({key: req.params.key}, (err, cache) => {
-      if (err) {
-        console.log('Cache miss')
-        return Cache.create(req.params, function (err, cache) {
+    return Cache.findOne({key: req.params.key}, (err, cache) => {
+      if (err) return res.status(500).end();
+      if (!cache) {
+        /* eslint-disable-next-line */
+        console.log('Cache miss');
+        return Cache.create(req.params, function(err, cache) {
           if (err) return res.status(422).json(err.message);
           return res.status(201).json(cache);
         });
-      };
-      console.log('Cache hit')
+      }
+      /* eslint-disable-next-line */
+      console.log('Cache hit');
       return res.status(200).json(cache);
     });
   },
