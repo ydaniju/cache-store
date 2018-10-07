@@ -38,6 +38,14 @@ const CacheController = {
           .json({'message': `Cache with key ${req.params.key} deleted!`});
     });
   },
+  destroyAll: (req, res) => {
+    return Cache.remove({}, (err) => {
+      if (err) return res.status(500).end();
+      return res
+        .status(200)
+        .json({ 'message': `All caches cleared!` });
+    });
+  },
 };
 
 module.exports = CacheController;

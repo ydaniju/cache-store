@@ -212,15 +212,16 @@ describe('Cache Controller', () => {
       });
     });
 
-    // context('when there is an error', () => {
-    //   it('should return status 500', () => {
-    //     sinon.stub(Cache, 'findOneAndDelete').yields(error);
-    //     CacheController.destroy(req, res);
+    context('when there is an error', () => {
+      it('should return status 500', () => {
+        sinon.stub(Cache, 'remove').yields(error);
+        CacheController.destroyAll(req, res);
 
-    //     sinon.assert.calledWith(res.status, 500);
-    //     sinon.assert.calledOnce(res.status(500).end);
-    //   });
-    // });
+        sinon.assert.calledWith(Cache.remove, {});
+        sinon.assert.calledWith(res.status, 500);
+        sinon.assert.calledOnce(res.status(500).end);
+      });
+    });
   });
 });
 
