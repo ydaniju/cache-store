@@ -1,4 +1,5 @@
 const Cache = require('../models/cache.model');
+const cacheHelper = require('../helpers/cache.helper');
 
 const CacheController = {
   index: (req, res) => {
@@ -13,22 +14,14 @@ const CacheController = {
       if (!cache) {
         /* eslint-disable-next-line */
         console.log('Cache miss');
-        return Cache.create(req.params, function(err, cache) {
-          if (err) return res.status(422).json(err.message);
-          return res.status(201).json(cache);
-        });
+        return cacheHelper.create(req.params, res);
       }
       /* eslint-disable-next-line */
       console.log('Cache hit');
       return res.status(200).json(cache);
     });
   },
-  create: (req, res) => {
-    return Cache.create(req.body, function(err, cache) {
-      if (err) return res.status(422).json(err.message);
-      return res.status(201).json(cache);
-    });
-  },
+  create: (req, res) => cacheHelper.create(req.body, res),
   destroy: (req, res) => {
     return Cache.findOneAndDelete({key: req.params.key}, (err, cache) => {
       if (err) return res.status(500).end();
