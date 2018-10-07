@@ -7,6 +7,19 @@ const CacheController = {
       return res.status(200).json(caches);
     });
   },
+  show: (req, res) => {
+    return Cache.find({key: req.params.key}, (err, cache) => {
+      if (err) {
+        console.log('Cache miss')
+        return Cache.create(req.params, function (err, cache) {
+          if (err) return res.status(422).json(err.message);
+          return res.status(201).json(cache);
+        });
+      };
+      console.log('Cache hit')
+      return res.status(200).json(cache);
+    });
+  },
   create: (req, res) => {
     return Cache.create(req.body, function(err, cache) {
       if (err) return res.status(422).json(err.message);

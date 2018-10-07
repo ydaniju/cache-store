@@ -1,3 +1,4 @@
+const expect = require('chai').expect;
 const sinon = require('sinon');
 const CacheController = require('../../app/controllers/cache.controller');
 const Cache = require('../../app/models/cache.model');
@@ -42,7 +43,51 @@ describe('Cache Controller', () => {
     });
   });
 
-  describe('create a cache', () => {
+  describe('show (a cache)', () => {
+    let req; let status; let end; let res; let json; let error;
+    let expectedResult;
+    beforeEach(() => {
+      end = sinon.spy();
+      json = sinon.spy();
+      req = { body: { key: 'badminton' }, params: { key: 'badminton' } }
+      status = sinon.stub();
+      res = { json, status, end };
+      status.returns(res);
+      expectedResult = cacheFixtures.firstCache;
+      error = new Error({ error: 'blah blah' });
+    });
+
+    afterEach(() => {
+      sinon.restore();
+    });
+
+    context('when successful', () => {
+      it('returns array of Caches or empty array', () => {
+        sinon.stub(Cache, 'find').yields(null, expectedResult);
+
+        CacheController.show(req, res);
+
+        sinon.assert.calledWith(Cache.find, {key: req.params.key});
+        sinon.assert.calledWith(res.json, sinon.match.has('data'));
+      });
+    });
+
+    context('when cache does not exist', () => {
+      it('creates cache', () => {
+        sinon.stub(Cache, 'find').yields(error);
+        CacheController.show(req, res);
+        sinon.stub(Cache, 'create').yields(null, expectedResult);
+
+        CacheController.create(req, res);
+
+        sinon.assert.calledWith(Cache.find, { key: req.params.key });
+        sinon.assert.calledWith(Cache.create, req.body);
+        sinon.assert.calledWith(res.status, 201);
+      });
+    });
+  });
+
+  describe('create (a cache)', () => {
     let error; let req; let res; let expectedResult; let status;
     beforeEach(() => {
       req = {body: {key: 'badminton'}};
@@ -76,7 +121,7 @@ describe('Cache Controller', () => {
     });
   });
 
-  describe('destroy a cache', () => {
+  describe('destroy (a cache)', () => {
     let error; let req; let res; let status;
     beforeEach(() => {
       req = {body: {key: 'badminton'}, params: {key: 'badminton'}};
