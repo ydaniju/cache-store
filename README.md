@@ -6,8 +6,9 @@ A key-value store for generating radom data for your keys
 
 ### Prerequisites
 
-- Mongo
-- Yarn
+- Node v8.9.4
+- Mongo v4.0.2
+- Yarn 1.10.1
 
 ### Installing
 
