@@ -16,4 +16,7 @@ router.post('/caches', CacheController.create);
 // DELETE '/caches/:key'
 router.delete('/caches/:key', CacheController.destroy);
 
+// DELETE '/caches'
+router.delete('/caches', CacheController.destroyAll);
+
 module.exports = router;

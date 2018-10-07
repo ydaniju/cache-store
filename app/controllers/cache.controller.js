@@ -39,7 +39,7 @@ const CacheController = {
     });
   },
   destroyAll: (req, res) => {
-    return Cache.remove({}, (err) => {
+    return Cache.deleteMany({}, (err) => {
       if (err) return res.status(500).end();
       return res
         .status(200)

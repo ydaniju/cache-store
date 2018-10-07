@@ -203,10 +203,10 @@ describe('Cache Controller', () => {
 
     context('when successful', () => {
       it('should return status 200', () => {
-        sinon.stub(Cache, 'remove').yields(null, {});
+        sinon.stub(Cache, 'deleteMany').yields(null, {});
         CacheController.destroyAll(req, res);
 
-        sinon.assert.calledWith(Cache.remove, {});
+        sinon.assert.calledWith(Cache.deleteMany, {});
         sinon.assert.calledWith(
             res.json, sinon.match({'message': 'All caches cleared!'}));
       });
@@ -214,10 +214,10 @@ describe('Cache Controller', () => {
 
     context('when there is an error', () => {
       it('should return status 500', () => {
-        sinon.stub(Cache, 'remove').yields(error);
+        sinon.stub(Cache, 'deleteMany').yields(error);
         CacheController.destroyAll(req, res);
 
-        sinon.assert.calledWith(Cache.remove, {});
+        sinon.assert.calledWith(Cache.deleteMany, {});
         sinon.assert.calledWith(res.status, 500);
         sinon.assert.calledOnce(res.status(500).end);
       });
