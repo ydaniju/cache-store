@@ -2,8 +2,6 @@ process.env.NODE_ENV = 'test';
 
 const sinon = require('sinon');
 const request = require('request');
-const chai = require('chai');
-const expect = chai.expect;
 const context = describe;
 
 const cacheFixtures = require('../fixtures/cache.fixture');
@@ -32,13 +30,13 @@ describe('caches requests', () => {
         request.get.restore();
       });
 
-      it('should return all caches', (done) => {
+      test('should return all caches', (done) => {
         this.get.yields(null, responseObject, JSON.stringify(responseBody));
         request.get('/caches', (err, res, body) => {
           const parsedBody = JSON.parse(body);
           // there should be a 200 status code
-          expect(res.statusCode).to.eql(200);
-          expect(parsedBody.length).to.eql(3);
+          expect(res.statusCode).toBe(200);
+          expect(parsedBody.length).toBe(3);
 
           done();
         });
@@ -57,11 +55,11 @@ describe('caches requests', () => {
         request.get.restore();
       });
 
-      it('returns status 500', (done) => {
+      test('returns status 500', (done) => {
         this.get.yields(null, responseObject, JSON.stringify(responseBody));
         request.get('/caches', (err, res, body) => {
           // there should be a 500 status code
-          expect(res.statusCode).to.eql(500);
+          expect(res.statusCode).toBe(500);
 
           done();
         });
@@ -86,13 +84,13 @@ describe('caches requests', () => {
         request.post.restore();
       });
 
-      it('should return all caches', (done) => {
+      test('should return all caches', (done) => {
         this.post.yields(null, responseObject, JSON.stringify(responseBody));
         request.post('/caches', (err, res, body) => {
           const parsedBody = JSON.parse(body);
 
-          expect(res.statusCode).to.eql(201);
-          expect(parsedBody.data).to.eql('a335e33c');
+          expect(res.statusCode).toBe(201);
+          expect(parsedBody.data).toBe('a335e33c');
 
           done();
         });
@@ -111,10 +109,10 @@ describe('caches requests', () => {
         request.post.restore();
       });
 
-      it('returns status 422', (done) => {
+      test('returns status 422', (done) => {
         this.post.yields(null, responseObject, JSON.stringify(responseBody));
         request.post('/caches', (err, res, body) => {
-          expect(res.statusCode).to.eql(422);
+          expect(res.statusCode).toBe(422);
           done();
         });
       });

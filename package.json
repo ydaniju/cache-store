@@ -10,15 +10,12 @@
     "lint": "eslint .",
     "start": "NODE_ENV=production node server.js",
     "start:dev": "NODE_ENV=development node server.js",
-    "test": "nyc mocha spec/**/**.spec.js --timeout 10000"
+    "test": "jest spec/**/**.spec.js"
   },
   "devDependencies": {
-    "chai": "^4.2.0",
     "eslint": "^5.6.1",
     "eslint-config-google": "^0.10.0",
     "jest": "^23.6.0",
-    "mocha": "^5.2.0",
-    "nyc": "^13.0.1",
     "request": "^2.88.0",
     "sinon": "^6.3.5"
   },

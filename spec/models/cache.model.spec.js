@@ -1,48 +1,47 @@
-const expect = require('chai').expect;
 const Cache = require('../../app/models/cache.model');
 
 describe('Cache', () => {
-  it('should be invalid if key is empty', (done) => {
+  test('should be invalid if key is empty', (done) => {
     const cache = new Cache({key: null, data: 'random', expires: 123});
 
     cache.validate((err) => {
-      expect(err.errors.key).to.exist;
+      expect(err.errors.key).toBeDefined();
       done();
     });
   });
 
-  it('should be invalid if data and key are empty', (done) => {
+  test('should be invalid if data and key are empty', (done) => {
     const cache = new Cache({key: null, data: null, expires: 123});
 
     cache.validate((err) => {
-      expect(err.errors.data).to.exist;
+      expect(err.errors.data).toBeDefined();
       done();
     });
   });
 
-  it('should be invalid if expires is empty', (done) => {
+  test('should be invalid if expires is empty', (done) => {
     const cache = new Cache({key: 'lost', data: null, expires: null});
 
     cache.validate((err) => {
-      expect(err.errors.expires).to.exist;
+      expect(err.errors.expires).toBeDefined();
       done();
     });
   });
 
-  it('sets `data` when valid', (done) => {
+  test('sets `data` when valid', (done) => {
     const cache = new Cache({key: 'lost'});
 
     cache.validate((err) => {
-      expect(err).to.not.exist;
-      expect(cache.data).to.exist;
+      expect(err).toBeFalsy();
+      expect(cache.data).toBeDefined();
       done();
     });
   });
 
-  it('sets `expires` on initialize', (done) => {
+  test('sets `expires` on initialize', (done) => {
     const cache = new Cache({key: 'lost'});
 
-    expect(cache.expires).to.exist;
+    expect(cache.expires).toBeDefined();
     done();
   });
 });
