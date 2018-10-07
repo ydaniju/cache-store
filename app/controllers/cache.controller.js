@@ -1,7 +1,7 @@
 const Cache = require('../models/cache.model');
 
 const CacheController = {
-  getAll: (req, res) => {
+  index: (req, res) => {
     return Cache.find({}, (err, caches) => {
       if (err) return res.status(500).json(err.message);
       return res.status(200).json(caches);
