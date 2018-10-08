@@ -32,13 +32,14 @@ Run `yarn lint`
 
 ## API endpoints.
 
-| EndPoint                                |   Functionality                      |
-| --------------------------------------- | ------------------------------------:|
-| POST /caches (body -> { key: 'aaa'})    | creates cache with key aaa           |
-| GET /caches                             | shows all keys in the cache          |
-| GET /caches/:key                        | shows data for given key             |
-| DELETE /caches/:key                     | deletes a given key                  |
-| DELETE /caches            							| delete all keys and their info       |
+| EndPoint                                			|   Functionality                      |
+| --------------------------------------------- | ------------------------------------:|
+| POST /caches (body -> { key: 'aaa'})    			| creates cache with key aaa           |
+| PATCH /caches/:key (body -> { key: 'abc'})    | patches cache with key aaa           |
+| GET /caches                             			| shows all keys in the cache          |
+| GET /caches/:key                        			| shows data for given key             |
+| DELETE /caches/:key                     			| deletes a given key                  |
+| DELETE /caches            										| delete all keys and their info       |
 
 ## Deployment
 
