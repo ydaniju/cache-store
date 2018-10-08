@@ -1,4 +1,5 @@
 const Cache = require('../models/cache.model');
+const cacheHelper = require('../helpers/cache.helper');
 
 const CacheController = {
   index: (req, res) => {
@@ -13,10 +14,7 @@ const CacheController = {
       if (!cache) {
         /* eslint-disable-next-line */
         console.log('Cache miss');
-        return Cache.create(req.params, function(err, cache) {
-          if (err) return res.status(422).json(err.message);
-          return res.status(201).json(cache);
-        });
+        return cacheHelper.create(req.params, res);
       }
       /* eslint-disable-next-line */
       console.log('Cache hit');
@@ -24,9 +22,12 @@ const CacheController = {
     });
   },
   create: (req, res) => {
-    return Cache.create(req.body, function(err, cache) {
-      if (err) return res.status(422).json(err.message);
-      return res.status(201).json(cache);
+    return Cache.findOne({key: req.body.key}, (err, cache) => {
+      if (err) return res.status(500).end();
+      if (!cache) {
+        return cacheHelper.create(req.body, res);
+      }
+      return res.status(200).json(cache);
     });
   },
   destroy: (req, res) => {
@@ -42,8 +43,8 @@ const CacheController = {
     return Cache.deleteMany({}, (err) => {
       if (err) return res.status(500).end();
       return res
-        .status(200)
-        .json({ 'message': `All caches cleared!` });
+          .status(200)
+          .json({'message': `All caches cleared!`});
     });
   },
 };

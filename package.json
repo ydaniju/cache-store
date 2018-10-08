@@ -10,18 +10,14 @@
     "lint": "eslint .",
     "start": "NODE_ENV=production node server.js",
     "start:dev": "NODE_ENV=development node server.js",
-    "test": "nyc mocha spec/**/**.spec.js --timeout 10000"
+    "test": "NODE_ENV=test jest spec/**/**.spec.js --coverage"
   },
   "devDependencies": {
-    "chai": "^4.2.0",
     "eslint": "^5.6.1",
     "eslint-config-google": "^0.10.0",
-    "mocha": "^5.2.0",
-    "node-mocks-http": "^1.7.2",
-    "nyc": "^13.0.1",
+    "jest": "^23.6.0",
     "request": "^2.88.0",
-    "sinon": "^6.3.5",
-    "sinon-mongoose": "^2.2.1"
+    "sinon": "^6.3.5"
   },
   "dependencies": {
     "body-parser": "^1.18.3",

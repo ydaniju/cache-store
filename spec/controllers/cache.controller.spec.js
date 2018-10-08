@@ -24,7 +24,7 @@ describe('Cache Controller', () => {
     });
 
     context('when successful', () => {
-      it('returns array of Caches or empty array', () => {
+      test('returns array of Caches or empty array', () => {
         sinon.stub(Cache, 'find').yields(null, expectedResult);
         CacheController.index(req, res);
         sinon.assert.calledWith(Cache.find, {});
@@ -33,7 +33,7 @@ describe('Cache Controller', () => {
     });
 
     context('when not successful', () => {
-      it('returns status 500 on server error', () => {
+      test('returns status 500 on server error', () => {
         sinon.stub(Cache, 'find').yields(error);
         CacheController.index(req, res);
         sinon.assert.calledWith(Cache.find, {});
@@ -61,7 +61,7 @@ describe('Cache Controller', () => {
     });
 
     context('when successful', () => {
-      it('returns array of Caches or empty array', () => {
+      test('returns array of Caches or empty array', () => {
         sinon.stub(Cache, 'findOne').yields(null, expectedResult);
 
         CacheController.show(req, res);
@@ -72,7 +72,7 @@ describe('Cache Controller', () => {
     });
 
     context('when cache does not exist', () => {
-      it('creates cache', () => {
+      test('creates cache', () => {
         sinon.stub(Cache, 'findOne').yields(null, null);
         sinon.stub(Cache, 'create').yields(null, expectedResult);
         CacheController.show(req, res);
@@ -82,7 +82,7 @@ describe('Cache Controller', () => {
         sinon.assert.calledWith(res.status, 201);
       });
 
-      it('throws 422 error when not successful', () => {
+      test('throws 422 error when not successful', () => {
         sinon.stub(Cache, 'findOne').yields(null, null);
         sinon.stub(Cache, 'create').yields(error);
         CacheController.show(req, res);
@@ -94,7 +94,7 @@ describe('Cache Controller', () => {
     });
 
     context('when unsuccessful', () => {
-      it('throw 500 error', () => {
+      test('throw 500 error', () => {
         sinon.stub(Cache, 'findOne').yields(error);
         CacheController.show(req, res);
 
@@ -109,7 +109,7 @@ describe('Cache Controller', () => {
     beforeEach(() => {
       req = {body: {key: 'badminton'}};
       status = sinon.stub();
-      res = {json: sinon.spy(), status};
+      res = {json: sinon.spy(), status, end: sinon.spy()};
       status.returns(res);
       error = new Error({error: 'some error'});
     });
@@ -118,22 +118,47 @@ describe('Cache Controller', () => {
       sinon.restore();
     });
 
-    context('when successful', () => {
-      it('should return created Cache obj', () => {
-        expectedResult = req.body;
-        sinon.stub(Cache, 'create').yields(null, expectedResult);
+    context('when cache key already exists exist', () => {
+      expectedResult = {key: 'key', data: 'data'};
+      test('returns the cache', () => {
+        sinon.stub(Cache, 'findOne').yields(null, expectedResult);
+
         CacheController.create(req, res);
-        sinon.assert.calledWith(Cache.create, req.body);
-        sinon.assert.calledWith(res.json, sinon.match({key: req.body.key}));
+
+        sinon.assert.calledWith(Cache.findOne, {key: req.body.key});
+        sinon.assert.calledWith(res.json, sinon.match.has('data'));
       });
     });
 
-    context('when not successful', () => {
-      it('should return status 422 on server error', () => {
+    context('when cache does not exist', () => {
+      test('creates cache', () => {
+        sinon.stub(Cache, 'findOne').yields(null, null);
+        sinon.stub(Cache, 'create').yields(null, expectedResult);
+        CacheController.create(req, res);
+
+        sinon.assert.calledWith(Cache.findOne, {key: req.body.key});
+        sinon.assert.calledWith(Cache.create, req.body);
+        sinon.assert.calledWith(res.status, 201);
+      });
+
+      test('throws 422 error when not successful', () => {
+        sinon.stub(Cache, 'findOne').yields(null, null);
         sinon.stub(Cache, 'create').yields(error);
         CacheController.create(req, res);
+
+        sinon.assert.calledWith(Cache.findOne, {key: req.body.key});
         sinon.assert.calledWith(Cache.create, req.body);
         sinon.assert.calledWith(res.status, 422);
+      });
+    });
+
+    context('when unsuccessful', () => {
+      test('throw 500 error', () => {
+        sinon.stub(Cache, 'findOne').yields(error);
+        CacheController.create(req, res);
+
+        sinon.assert.calledWith(Cache.findOne, {key: req.body.key});
+        sinon.assert.calledWith(res.status, 500);
       });
     });
   });
@@ -153,7 +178,7 @@ describe('Cache Controller', () => {
     });
 
     context('when successful', () => {
-      it('should return status 200', () => {
+      test('should return status 200', () => {
         sinon.stub(Cache, 'findOneAndDelete').yields(null, {});
         CacheController.destroy(req, res);
 
@@ -167,7 +192,7 @@ describe('Cache Controller', () => {
     });
 
     context('when not existing', () => {
-      it('should return status 404', () => {
+      test('should return status 404', () => {
         sinon.stub(Cache, 'findOneAndDelete').yields(null, null);
         CacheController.destroy(req, res);
 
@@ -176,7 +201,7 @@ describe('Cache Controller', () => {
     });
 
     context('when there is an error', () => {
-      it('should return status 500', () => {
+      test('should return status 500', () => {
         sinon.stub(Cache, 'findOneAndDelete').yields(error);
         CacheController.destroy(req, res);
 
@@ -202,7 +227,7 @@ describe('Cache Controller', () => {
     });
 
     context('when successful', () => {
-      it('should return status 200', () => {
+      test('should return status 200', () => {
         sinon.stub(Cache, 'deleteMany').yields(null, {});
         CacheController.destroyAll(req, res);
 
@@ -213,7 +238,7 @@ describe('Cache Controller', () => {
     });
 
     context('when there is an error', () => {
-      it('should return status 500', () => {
+      test('should return status 500', () => {
         sinon.stub(Cache, 'deleteMany').yields(error);
         CacheController.destroyAll(req, res);
 
