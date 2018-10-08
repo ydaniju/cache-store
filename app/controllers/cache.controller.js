@@ -18,7 +18,7 @@ const CacheController = {
       }
       /* eslint-disable-next-line */
       console.log('Cache hit');
-      return res.status(200).json(cache);
+      return res.status(200).json(cache.data);
     });
   },
   create: (req, res) => {

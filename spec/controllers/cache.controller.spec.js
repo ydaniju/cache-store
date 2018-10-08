@@ -67,7 +67,7 @@ describe('Cache Controller', () => {
         CacheController.show(req, res);
 
         sinon.assert.calledWith(Cache.findOne, {key: req.params.key});
-        sinon.assert.calledWith(res.json, sinon.match.has('data'));
+        sinon.assert.calledWith(res.json, sinon.match.string);
       });
     });
 
