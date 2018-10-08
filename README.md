@@ -30,6 +30,16 @@ Run `yarn test`
 
 Run `yarn lint`
 
+## Deployment
+
+Before deploying
+
+- Replace the start script in `package.json` with `NODE_ENV=production node server.js`
+
+- Create another script `start:dev` with value of the old start script ie `NODE_ENV=development node server.js`
+
+- You can now use `yarn start:dev` in development and `yarn start` in production
+
 ## Built With
 
 * [Node](https://nodejs.org/) - JavaScript Runtime
