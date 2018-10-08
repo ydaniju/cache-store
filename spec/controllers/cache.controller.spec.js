@@ -179,18 +179,17 @@ describe('Cache Controller', () => {
 
     context('when cache key update properly', () => {
       expectedResult = { key: 'key', data: 'data' };
-      test('returns the cache', () => {
+      test('returns status 204', () => {
         sinon.stub(Cache, 'findOneAndUpdate').yields(null, expectedResult);
 
         CacheController.update(req, res);
 
-        sinon.assert.calledWith(Cache.findOneAndUpdate, { key: req.body.key });
-        sinon.assert.calledWith(res.json, sinon.match.string);
+        sinon.assert.calledWith(res.status, 204);
       });
     });
 
     context('when cache does not exist', () => {
-      test('creates cache', () => {
+      test('returns status 404', () => {
         sinon.stub(Cache, 'findOneAndUpdate').yields(null, null);
         sinon.stub(Cache, 'create').yields(null, expectedResult);
 
