@@ -30,7 +30,16 @@ Run `yarn test`
 
 Run `yarn lint`
 
-## Deployment
+## API endpoints.
+
+| EndPoint                                |   Functionality                      |
+| --------------------------------------- | ------------------------------------:|
+| POST /caches (body -> { key: 'aaa'})    | creates cache with key aaa           |
+| GET /caches                             | shows all keys in the cache          |
+| GET /caches/:key                        | shows data for given key             |
+| DELETE /caches/:key                     | deletes a given key                  |
+| DELETE /caches            							| delete all keys and their info       |
+
 
 Before deploying
 
