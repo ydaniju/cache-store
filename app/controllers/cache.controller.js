@@ -21,7 +21,15 @@ const CacheController = {
       return res.status(200).json(cache);
     });
   },
-  create: (req, res) => cacheHelper.create(req.body, res),
+  create: (req, res) => {
+    return Cache.findOne({key: req.body.key}, (err, cache) => {
+      if (err) return res.status(500).end();
+      if (!cache) {
+        cacheHelper.create(req.body, res);
+      }
+      return res.status(200).json(cache);
+    });
+  },
   destroy: (req, res) => {
     return Cache.findOneAndDelete({key: req.params.key}, (err, cache) => {
       if (err) return res.status(500).end();
@@ -35,8 +43,8 @@ const CacheController = {
     return Cache.deleteMany({}, (err) => {
       if (err) return res.status(500).end();
       return res
-        .status(200)
-        .json({ 'message': `All caches cleared!` });
+          .status(200)
+          .json({'message': `All caches cleared!`});
     });
   },
 };

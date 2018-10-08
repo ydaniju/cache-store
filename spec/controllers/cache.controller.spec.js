@@ -109,7 +109,7 @@ describe('Cache Controller', () => {
     beforeEach(() => {
       req = {body: {key: 'badminton'}};
       status = sinon.stub();
-      res = {json: sinon.spy(), status};
+      res = {json: sinon.spy(), status, end: sinon.spy()};
       status.returns(res);
       error = new Error({error: 'some error'});
     });
@@ -118,22 +118,47 @@ describe('Cache Controller', () => {
       sinon.restore();
     });
 
-    context('when successful', () => {
-      test('should return created Cache obj', () => {
-        expectedResult = req.body;
-        sinon.stub(Cache, 'create').yields(null, expectedResult);
+    context('when cache key already exists exist', () => {
+      expectedResult = {key: 'key', data: 'data'};
+      test('returns the cache', () => {
+        sinon.stub(Cache, 'findOne').yields(null, expectedResult);
+
         CacheController.create(req, res);
-        sinon.assert.calledWith(Cache.create, req.body);
-        sinon.assert.calledWith(res.json, sinon.match({key: req.body.key}));
+
+        sinon.assert.calledWith(Cache.findOne, {key: req.body.key});
+        sinon.assert.calledWith(res.json, sinon.match.has('data'));
       });
     });
 
-    context('when not successful', () => {
-      test('should return status 422 on server error', () => {
+    context('when cache does not exist', () => {
+      test('creates cache', () => {
+        sinon.stub(Cache, 'findOne').yields(null, null);
+        sinon.stub(Cache, 'create').yields(null, expectedResult);
+        CacheController.create(req, res);
+
+        sinon.assert.calledWith(Cache.findOne, {key: req.body.key});
+        sinon.assert.calledWith(Cache.create, req.body);
+        sinon.assert.calledWith(res.status, 201);
+      });
+
+      test('throws 422 error when not successful', () => {
+        sinon.stub(Cache, 'findOne').yields(null, null);
         sinon.stub(Cache, 'create').yields(error);
         CacheController.create(req, res);
+
+        sinon.assert.calledWith(Cache.findOne, {key: req.body.key});
         sinon.assert.calledWith(Cache.create, req.body);
         sinon.assert.calledWith(res.status, 422);
+      });
+    });
+
+    context('when unsuccessful', () => {
+      test('throw 500 error', () => {
+        sinon.stub(Cache, 'findOne').yields(error);
+        CacheController.create(req, res);
+
+        sinon.assert.calledWith(Cache.findOne, {key: req.body.key});
+        sinon.assert.calledWith(res.status, 500);
       });
     });
   });
