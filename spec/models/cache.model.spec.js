@@ -1,4 +1,19 @@
+const mongoose = require('mongoose');
+const config = require('../../config');
 const Cache = require('../../app/models/cache.model');
+
+beforeAll(() => {
+  // connecting MongoDB using mongoose to our application
+  mongoose.set('useCreateIndex', true);
+  mongoose.connect(config.db, { useNewUrlParser: true });
+});
+afterAll((done) => {
+  mongoose.connection.db.dropDatabase(() => {
+    mongoose.connection.close(() => {
+      done();
+    });
+  });
+});
 
 describe('Cache', () => {
   test('should be invalid if key is empty', (done) => {
@@ -43,5 +58,17 @@ describe('Cache', () => {
 
     expect(cache.expires).toBeDefined();
     done();
+  });
+
+  test('when max count exceeded', (done) => {
+    Cache.create({key: 'play'}, (err, oldCache) => {
+    });
+    const cache = new Cache({ key: 'lost' });
+    console.log(process.env.MAX_CACHE_LIMIT)
+    cache.save((err) => {
+      expect(err).toBeFalsy();
+      expect(cache.expires).toBeDefined();
+      done();
+    });
   });
 });
