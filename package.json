@@ -8,8 +8,7 @@
   "license": "MIT",
   "scripts": {
     "lint": "eslint .",
-    "start": "NODE_ENV=production node server.js",
-    "start:dev": "NODE_ENV=development node server.js",
+    "start": "NODE_ENV=development node server.js",
     "test": "NODE_ENV=test jest spec/**/**.spec.js --coverage"
   },
   "devDependencies": {
