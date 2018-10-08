@@ -1,12 +1,13 @@
 const mongoose = require('mongoose');
 const sinon = require('sinon');
+const context = describe;
 const config = require('../../config');
 const Cache = require('../../app/models/cache.model');
 
 beforeAll(() => {
   // connecting MongoDB using mongoose to our application
   mongoose.set('useCreateIndex', true);
-  mongoose.connect(config.db, { useNewUrlParser: true });
+  mongoose.connect(config.db, {useNewUrlParser: true});
 });
 afterAll((done) => {
   mongoose.connection.db.dropDatabase(() => {
@@ -67,9 +68,9 @@ describe('Cache', () => {
     });
 
     test('deletes one cache when max count exceeded', (done) => {
-      Cache.create({ key: 'random' }, (err, oldCache) => {
+      Cache.create({key: 'random'}, (err, oldCache) => {
         sinon.stub(Cache, 'findOne').yields(null, oldCache);
-        const newCache = new Cache({ key: 'lost' });
+        const newCache = new Cache({key: 'lost'});
         sinon.stub(Cache, 'countDocuments').yields(null, 5);
 
         newCache.save((err) => {
@@ -78,24 +79,44 @@ describe('Cache', () => {
         });
       });
     });
-  })
+  });
 
   describe('after findOne', () => {
     afterEach(() => {
       sinon.restore();
     });
 
-    test('reset expires if cache is expired', (done) => {
-      Cache.create({ key: 'random' }, (err, oldCache) => {
-        console.log(oldCache.expires)
-        oldCache.expires = Date.now() - 2000 * 60 * 60;
-        console.log(oldCache.expires)
-        sinon.stub(Cache, 'findOne').yields(null, oldCache);
-        Cache.findOne({ key: oldCache.key}, (err, newCache) => {
+    context('when cache is expired', () => {
+      test('reset expires if cache is expired', (done) => {
+        Cache.create({key: 'random'}, (err, oldCache) => {
+          oldCache.expires = Date.now() - 2000 * 60 * 60;
 
+          Cache.findOne({key: oldCache.key}, (err, newCache) => {
+            expect(oldCache.expires).not.toEqual(newCache.expires);
+          });
+          done();
         });
-        done();
       });
     });
-  })
+
+    context('when cache is not expired', () => {
+      test('does not reset old cache', (done) => {
+        Cache.create({key: 'random2'}, (err, oldCache) => {
+          Cache.findOne({key: oldCache.key}, (err, newCache) => {
+            expect(oldCache.expires).toEqual(newCache.expires);
+          });
+          done();
+        });
+      });
+    });
+
+    context('when cache is not found matching', () => {
+      test('return null cache', (done) => {
+        Cache.findOne({key: 'non-existent'}, (err, cache) => {
+          expect(cache).toBe(null);
+          done();
+        });
+      });
+    });
+  });
 });
