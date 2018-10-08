@@ -1,5 +1,4 @@
 module.exports = {
-  port: 8080,
+  port: 8081,
   db: 'mongodb://localhost:27017/cache_store_test',
-  MAX_CACHE_LIMIT: 1,
 };

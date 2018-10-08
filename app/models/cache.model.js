@@ -1,7 +1,7 @@
 const crypto = require('crypto');
 const mongoose = require('mongoose');
 const MAX_COUNT = process.env.MAX_CACHE_LIMIT || 5;
-const TTL = process.env.CACHE_TTL || 60 * 60 * 1000;
+const TTL = process.env.CACHE_TTL || 60 * 60 * 1000 * 2;
 
 const cacheSchema = new mongoose.Schema({
   key: {type: String, required: true, index: true, unique: true},
