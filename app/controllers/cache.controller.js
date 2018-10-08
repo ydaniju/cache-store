@@ -3,7 +3,7 @@ const cacheHelper = require('../helpers/cache.helper');
 
 const CacheController = {
   index: (req, res) => {
-    return Cache.find({}, (err, caches) => {
+    return Cache.find({}, 'key', (err, caches) => {
       if (err) return res.status(500).json(err.message);
       return res.status(200).json(caches);
     });
