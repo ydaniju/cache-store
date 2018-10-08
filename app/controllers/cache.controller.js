@@ -25,7 +25,7 @@ const CacheController = {
     return Cache.findOne({key: req.body.key}, (err, cache) => {
       if (err) return res.status(500).end();
       if (!cache) {
-        cacheHelper.create(req.body, res);
+        return cacheHelper.create(req.body, res);
       }
       return res.status(200).json(cache);
     });
