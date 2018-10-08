@@ -166,11 +166,11 @@ describe('Cache Controller', () => {
   describe('update (a cache)', () => {
     let error; let req; let res; let expectedResult; let status;
     beforeEach(() => {
-      req = { body: { key: 'badminton' } };
+      req = {body: {key: 'badminton'}};
       status = sinon.stub();
-      res = { json: sinon.spy(), status, end: sinon.spy() };
+      res = {json: sinon.spy(), status, end: sinon.spy()};
       status.returns(res);
-      error = new Error({ error: 'some error' });
+      error = new Error({error: 'some error'});
     });
 
     afterEach(() => {
@@ -178,7 +178,7 @@ describe('Cache Controller', () => {
     });
 
     context('when cache key update properly', () => {
-      expectedResult = { key: 'key', data: 'data' };
+      expectedResult = {key: 'key', data: 'data'};
       test('returns status 204', () => {
         sinon.stub(Cache, 'findOneAndUpdate').yields(null, expectedResult);
 
