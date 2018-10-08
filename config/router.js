@@ -13,6 +13,8 @@ router.get('/caches/:key', CacheController.show);
 // POST '/caches'
 router.post('/caches', CacheController.create);
 
+router.patch('/caches/:key', CacheController.update);
+
 // DELETE '/caches/:key'
 router.delete('/caches/:key', CacheController.destroy);
 

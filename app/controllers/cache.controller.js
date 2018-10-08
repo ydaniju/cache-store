@@ -27,8 +27,20 @@ const CacheController = {
       if (!cache) {
         return cacheHelper.create(req.body, res);
       }
-      return res.status(200).json(cache);
+      return res.status(200).json(cache.data);
     });
+  },
+  update: (req, res) => {
+    return Cache.findOneAndUpdate(
+        {key: req.body.key},
+        {$set: req.body},
+        {new: true}, (err, cache) => {
+          if (err) return res.status(500).end();
+          if (!cache) {
+            return res.status(404);
+          }
+          return res.status(200).json(cache);
+        });
   },
   destroy: (req, res) => {
     return Cache.findOneAndDelete({key: req.params.key}, (err, cache) => {
