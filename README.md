@@ -40,6 +40,7 @@ Run `yarn lint`
 | DELETE /caches/:key                     | deletes a given key                  |
 | DELETE /caches            							| delete all keys and their info       |
 
+## Deployment
 
 Before deploying
 
