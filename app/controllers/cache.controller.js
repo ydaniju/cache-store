@@ -39,7 +39,7 @@ const CacheController = {
           if (!cache) {
             return res.status(404);
           }
-          return res.status(200).json(cache);
+          return res.status(200).json(cache.data);
         });
   },
   destroy: (req, res) => {
