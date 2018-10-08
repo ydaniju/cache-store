@@ -16,7 +16,7 @@ cacheSchema.pre('validate', function(next) {
 
   if (secret) {
     const salt = secret + Date.now.toString();
-    this.data = crypto.createHmac('sha256', salt).digest('hex');
+    this.data = cacheSchema.createString(salt);
   }
   next();
 });
@@ -28,7 +28,15 @@ cacheSchema.pre('save', function(next) {
     if (err) next(err);
 
     if (cacheCount == MAX_COUNT) {
-      // overwrite old entry
+      // find and overwrite the one that would expire soonest
+      self.constructor
+          .findOne({}, {}, {sort: {'expires': 1}}, (err, oldestCache) => {
+            if (err) next(err);
+            oldestCache.remove((err, oldestCache) => {
+              if (err) next(err);
+              next();
+            });
+          });
     }
     next();
   });
@@ -38,17 +46,21 @@ cacheSchema.pre('save', function(next) {
 cacheSchema.post('findOne', function(cache, next) {
   if (!cache) next(); // clause to safeguard against using cache when it is null
   const salt = cache.key + Date.now.toString();
-  const newCacheData = crypto.createHmac('sha256', salt).digest('hex');
+  const newCacheData = cacheSchema.createString(salt);
   // only return old data if it has not expired
   const cacheData = cache.expires >= Date.now() ? cache.data : newCacheData;
   this.updateOne(
-    { key: cache.key },
-    { expires: Date.now() + TTL, data: cacheData},
-    (err) => {
-      if (err) next(err);
-    }
+      {key: cache.key},
+      {expires: Date.now() + TTL, data: cacheData},
+      (err) => {
+        if (err) next(err);
+      }
   );
   next();
 });
+
+// Creates random string
+cacheSchema.createString = (salt) => crypto
+    .createHmac('sha256', salt).digest('hex');
 
 module.exports = mongoose.model('Cache', cacheSchema);
