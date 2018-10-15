@@ -4,6 +4,10 @@ const router = express.Router();
 
 const CacheController = require('../app/controllers/cache.controller');
 
+router.get('/', (req, res) => {
+  return res.json();
+});
+
 // GET '/caches'
 router.get('/caches', CacheController.index);
 
