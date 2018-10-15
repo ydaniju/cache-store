@@ -1,6 +1,5 @@
 const bodyParser = require('body-parser');
 const express = require('express');
-const methodOverride = require('method-override');
 const morgan = require('morgan');
 const router = require('../config/router');
 const app = express();
@@ -21,6 +20,5 @@ app.use(bodyParser.urlencoded({'extended': true}));
 // parse application/json
 app.use(bodyParser.json());
 app.use(router);
-app.use(methodOverride);
 
 module.exports = app;
